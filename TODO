@@ -1,0 +1,13 @@
+TODO list
+---------
+
+* Change combi with matrix
+
+* Optimize function for generating grid points
+
+* Replace asserts with exceptions
+
+* Add exceptions to conversion functions
+
+* Move parameter d to Fuction interface?
+

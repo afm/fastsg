@@ -1,0 +1,26 @@
+DESCRIPTION
+-----------
+
+Fast Sparse Grids (or FastSG) is a free collection of fast C++ routines 
+for representing and evaluating higher-dimensional functions using the 
+sparse grid technique. It includes routines optimized with respect to 
+both memory consumption and execution time. FastSG is in general faster 
+that other publically-available sparse grid implementations. To achieve
+this performance, FastSG uses a new data structure based on a bijection
+that maps a higer-dimensional sparse grid to a set of consecutive 
+integers, thus minimizing the memory consumption.
+
+More information about the data structure and the algorithms built on 
+top of it can be found in the following paper:
+
+Alin Murarasu, Josef Weidendorfer, Gerrit Buse, Daniel Butnaru and Dirk
+Pflüger: "Compact Data Structure and Scalable Algorithms for the Sparse
+Grid Technique", PPoPP, Feb. 2011.
+
+
+CONTACTS
+--------
+
+FastSG was written by Alin Murarasu. You can contact him at:
+murarasu@in.tum.de.
+
