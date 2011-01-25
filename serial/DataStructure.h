@@ -1,4 +1,5 @@
 /**********************************************************************************
+ *
  * Copyright (c) 2009, 2010 Alin Murarasu
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -19,6 +20,7 @@
  * A. Murarasu, J. Weidendorfer, G. Buse, D. Butnaru, and D. Pflueger:
  * "Compact Data Structure and Scalable Algorithms for the Sparse Grid Technique"
  * PPoPP, Feb. 2011
+ *
  *********************************************************************************/
 
 #ifndef DATASTRUCTURE_H_
