@@ -1,6 +1,6 @@
 /**********************************************************************************
  *
- * Copyright (c) 2009, 2010 Alin Murarasu
+ * Copyright (c) 2010, 2011 Alin Murarasu, Aurora Mirea
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -25,7 +25,7 @@
 
 #include "SparseGrid.h"
 #include "Converter.h"
-#include  "Helper.h"
+#include "Helper.h"
 #include "Function.h"
 
 #include <assert.h>

@@ -131,15 +131,15 @@ namespace fsg
 			 */
 			int next(int *crt_levels, int *crt_indices, int *next_levels, int *next_indices);
 			int getNumOfGridPoints() const;
-			void setNumOfGridPoints(int numOfGridPoints);
-		private:
-			int numOfGridPoints;
 			/**
 			 * @param d The number of dimensions
 			 * @param n The level of refinement
 			 * The size of a non-zero boundary, d-dimensional, n-refined sparse grid
 			 * @return The size
 			 */
+
+		private:
+			int numOfGridPoints;
 			int n0size(int d, int n);
 	};
 }

@@ -48,10 +48,10 @@ SparseGrid::SparseGrid(int d, int l, Function* f)
 		sg.d = d;
 		sg.l = l;
 		numOfGridPoints = n0size(sg.d, sg.l);
-
+		Helper::visited.resize(numOfGridPoints);
 		sg.sg1d = (float*) malloc(numOfGridPoints * sizeof(float));
 		
-		count = Helper::generate_grid_points(sg, gp, d - 1, l, f);
+		count = Helper::generate_grid_points(sg, gp, d - 1, l, f, numOfGridPoints);
 		printf("returned: %d, expected: %d\n", count, numOfGridPoints);
 		assert(count == numOfGridPoints);
 	} catch (int e) {
@@ -326,11 +326,6 @@ int SparseGrid::next(int *crt_levels, int *crt_indices, int *next_levels, int *n
 int SparseGrid::getNumOfGridPoints() const
 {
 	return numOfGridPoints;
-}
-
-void SparseGrid::setNumOfGridPoints(int numOfGridPoints)
-{
-	this->numOfGridPoints = numOfGridPoints;
 }
 
 /* the size of a non-zero boundary, d-dimensional, n-refined sparse grid */

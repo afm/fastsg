@@ -1,7 +1,6 @@
-
 /**********************************************************************************
  *
- * Copyright (c) 2009, 2010 Alin Murarasu
+ * Copyright (c) 2010, 2011 Alin Murarasu, Aurora Mirea
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -23,3 +22,170 @@
  * PPoPP, Feb. 2011
  *
  *********************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+#include <iostream>
+#include <vector>
+#include <set>
+
+#include "SparseGrid.h"
+#include "Converter.h"
+#include "Helper.h"
+
+using namespace fsg;
+
+class SampleFct : public Function
+{
+public:
+	float getValue (float *coords, int d)
+	{
+		int i;
+		float prod = 1;
+
+		for (i = 0; i < d; i++)
+			prod *= coords[i] * (2 - coords[i]);
+
+		return prod;
+	}
+};
+
+/*
+ * test if n0gp2idx generates all consecutive indices from 0 to nrGridPoints-1
+ */
+int testgp2idx () {
+	int b = 0;
+
+	SampleFct fct;
+	// specify d = number of dimensions and l = refinement level
+	int d = 5, l = 4;
+
+	// create a SparseGrid object
+	SparseGrid sgf = SparseGrid(d, l, &fct);
+
+	for (int i = 0; i < sgf.getNumOfGridPoints(); i++) {
+		if (!Helper::visited[i]) {
+			printf("Visited empty on position %i\n", i);
+			b = 1;
+		}
+	}
+	if (b) {
+		printf("******************** Test gp2idx failed! ************************\n");
+		return 1;
+	}
+	else
+	{
+		printf("************** Test gp2idx passed! ****************************\n");
+		return 0;
+	}
+	return 0;
+}
+
+
+int dim;
+typedef std::pair<int*,int*> Pair;
+/*
+ * Comparator for (l,i) pairs
+ */
+struct CompareVectors {
+  bool operator ()(const Pair& p1, const Pair& p2) const {
+	  int* l1 = (int*) p1.first;
+	  int* l2 = (int*) p2.first;
+	  int* i1 = (int*) p1.second;
+	  int* i2 = (int*) p2.second;
+	  int i = 0;
+	  for (i = 0; i < dim; i++) {
+		if (l1[i] != l2[i] || i1[i] != i2[i]) {
+
+			return (l1[i] != l2[i] || i1[i] != i2[i]);
+		}
+	  }
+	  return 1==1;
+  }
+};
+
+/*
+ * use a set to test if n0idx2gp generates unique pairs (l,i)
+ */
+int testidx2gp () {
+	int i;
+	std::set<Pair, CompareVectors> mapli;
+	int *lev, *ind;
+	std::set<Pair, CompareVectors>::iterator it;
+	// create an object which represents the function you want to use
+	SampleFct fct;
+	// specify d = number of dimensions and l = refinement level
+	int d = 5, l = 4;
+	// create a SparseGrid object
+	SparseGrid sgf = SparseGrid(d, l, &fct);
+
+	int nrGridPoints = sgf.getNumOfGridPoints();
+	dim = d;
+	for (i = 0; i < nrGridPoints; i++) {
+		lev = (int*)malloc(d*sizeof(int));
+		ind = (int*)malloc(d*sizeof(int));
+		if (!lev || !ind) {
+			printf("Allocation error!");
+			return 1;
+		}
+		Converter::idx2gp(i, lev, ind, sgf.sg.d, sgf.sg.l);
+		mapli.insert( std::make_pair(lev, ind));
+	}
+
+	if (mapli.size() != nrGridPoints) {
+		printf("******** Test idx2gp failed! Size is %i, expected size is %i ************\n", mapli.size(), nrGridPoints);
+		return 1;
+	}
+	else {
+		printf("*********** Test idx2gp passed! Size of set is %i ***********************\n", mapli.size());
+		return 0;
+	}
+	return 0;
+}
+
+/*
+ * test if n0idx2gp(n0gp2idx(point_on_grid)) = index
+ */
+int testBijection() {
+	int b = 0, i;
+	// create an object which represents the function you want to use
+	SampleFct fct;
+	// specify d = number of dimensions and l = refinement level
+	int d = 5, l = 4;
+	// create a SparseGrid object
+	SparseGrid sgf = SparseGrid(d, l, &fct);
+	int nrGridPoints = sgf.getNumOfGridPoints();
+	int lev[d], ind[d];
+
+	for (i = 0; i < nrGridPoints; i++) {
+		Converter::idx2gp(i, lev, ind, sgf.sg.d, sgf.sg.l);
+		if (i != Converter::gp2idx(lev, ind, sgf.sg.d, sgf.sg.l)) {
+			b = 1;
+			break;
+		}
+	}
+	if (!b) {
+		printf ("************************** Bijection test passed! *****************************\n");
+	}
+	else {
+		printf("************************** Bijection test failed! **************************\n);");
+		return 1;
+	}
+	return 0;
+}
+
+int main()
+{
+	try {
+		if (testgp2idx()) throw 1;
+
+		if (testidx2gp()) throw 2;
+
+		if (testBijection()) throw 3;
+	}
+	catch (int e) {
+		std::cout<<"Test number "<<e<<" failed"<<std::endl;
+	}
+    return 0;
+}
