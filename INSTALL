@@ -1,9 +1,9 @@
 INSTALL
 -------
 
-We assume a Linux operating system. After executing the make command
-the .so file will be available in the lib folder whereas the .h files
-can be found in the include folder.
+To install execute: 
 
-Have fun!
+>> ./configure
+
+>> make && make install
 
