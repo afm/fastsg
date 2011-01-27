@@ -229,8 +229,7 @@ int testSparseGridOps(int d, int l) {
 	sgf.hierarchize();
 
 	for (i = 0; i < nrGridPoints; i++) {
-		Converter::idx2gp(i, lev, ind, sgf.sg.d, sgf.sg.l);
-		Converter::li2coord(lev, ind, coords, sgf.sg.d);
+		Converter::idx2gp(i, coords, sgf.sg.d, sgf.sg.l);
 		if (sgf.evaluate(coords) != fct.getValue(coords, sgf.sg.d)) {
 			b = 1;
 			goto stop;

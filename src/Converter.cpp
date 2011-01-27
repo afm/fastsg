@@ -330,3 +330,19 @@ int Converter::computeLevel(float x, float a, float b)
 	return i;
 }
 
+int Converter::gp2idx(float *coords, int d, int n)
+{
+	int levels[d], indices[d];
+	
+	coord2li(coords, levels, indices, d);
+	
+	return gp2idx(levels, indices, d, n);
+}
+
+int Converter::idx2gp(int index, float *coords, int d, int n)
+{
+	int levels[d], indices[d];
+	
+	idx2gp(index, levels, indices, d, n);
+	li2coord(levels, indices, coords, d);
+}

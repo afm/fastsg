@@ -58,7 +58,7 @@ int Helper::combi(int n, int k)
 	return c;
 }
 
-int Helper::generate_grid_points(Sparse_grid_t sg, float* gp, int crt_d,  int n, Function* f)
+int Helper::generate_grid_points(sparse_grid_t sg, float* gp, int crt_d, int n, Function* f)
 {
 	int i, j, count = 0;
 	int levels[sg.d], indices[sg.d];

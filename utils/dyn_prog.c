@@ -23,7 +23,7 @@
  *
  *********************************************************************************/
  
-/* 
+/**
  * Description: 
  *	Dynamic programming for computing the number of vectors for which 
  *  their component sum is l and a restriction (maximum) for each individual 

@@ -30,7 +30,6 @@ typedef struct sparse_grid_t {
 	float *sg1d;
 	int d, l;
 	int **combi;
-}Sparse_grid_t;
-
+} sparse_grid_t;
 
 #endif /* DATASTRUCTURE_H_ */
