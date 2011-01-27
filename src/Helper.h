@@ -22,7 +22,7 @@
  * PPoPP, Feb. 2011
  *
  *********************************************************************************/
-#include <vector>
+
 
 #include "DataStructure.h"
 #include "Function.h"
@@ -42,7 +42,6 @@ namespace fsg {
 	 */
 	class Helper {
 	public:
-		static std::vector<int> visited;
 		/**
 		 * @param n Number of elements in a set
 		 * @param k Number of combinations
@@ -65,7 +64,7 @@ namespace fsg {
 		 * @param f The function giving the value for the sparse grid points
 		 * @return Number of points generated
 		 */
-		static int generate_grid_points(Sparse_grid_t sg, float* gp, int crt_d, int n, Function* f, int numGridPoints);
+		static int generate_grid_points(Sparse_grid_t sg, float* gp, int crt_d, int n, Function* f);
 	};
 }
 

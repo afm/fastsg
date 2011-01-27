@@ -51,21 +51,60 @@ public:
 	}
 };
 
+std::vector<int> visited;
+int generate_points(int const_d, int const_l, float* gp, int crt_d,  int n, int numGridPoints)
+{
+	int i, j, count = 0;
+	int levels[const_d], indices[const_d];
+	int val;
+	if (crt_d == -1) {
+		Converter::coord2li(gp, levels, indices, const_d);
+
+		val = Converter::gp2idx(levels, indices, const_d, const_l);
+
+		if (val < numGridPoints) {
+			visited[val] = 1;
+		}
+		else
+			std::cout<<"Index out of range [" << val << "]" << std::endl;
+
+		return 1;
+	} else {
+		gp[crt_d] = 0.0f;
+		count += generate_points(const_d, const_l, gp, crt_d - 1, n, numGridPoints);
+		gp[crt_d] = 1.0f;
+		count += generate_points(const_d, const_l, gp, crt_d - 1, n, numGridPoints);
+
+		/* for each level */
+		for (i = 0; i < n; i++) {
+			/* for each point on the level in dimension crt_d */
+			for (j = 0; j < (1 << i); j++) {
+				gp[crt_d] = (1.0f / (1 << i)) * (j + 0.5f);
+				count += generate_points(const_d, const_l, gp, crt_d - 1, n - i, numGridPoints);
+			}
+		}
+	}
+
+	return count;
+}
 /*
  * test if n0gp2idx generates all consecutive indices from 0 to nrGridPoints-1
  */
-int testgp2idx () {
+int testgp2idx (int d, int l) {
 	int b = 0;
-
-	SampleFct fct;
-	// specify d = number of dimensions and l = refinement level
-	int d = 5, l = 4;
-
-	// create a SparseGrid object
-	SparseGrid sgf = SparseGrid(d, l, &fct);
-
-	for (int i = 0; i < sgf.getNumOfGridPoints(); i++) {
-		if (!Helper::visited[i]) {
+	int i, numGridPoints = 0;
+	float gp[d];
+	/* for each dimension; 0-dimensional sparse grids are valid! */
+	for (i = 0; i <= d; i++) {
+		numGridPoints += (1 << i) * Helper::combi(d, i) * Helper::zerob_size(d - i, l);
+	}
+	
+	
+	visited.resize(numGridPoints);
+	generate_points(d, l, gp, d-1, l, numGridPoints);
+	
+	for (i = 0; i < numGridPoints; i++) {
+		if (!visited[i]) {
 			printf("Visited empty on position %i\n", i);
 			b = 1;
 		}
@@ -108,15 +147,13 @@ struct CompareVectors {
 /*
  * use a set to test if n0idx2gp generates unique pairs (l,i)
  */
-int testidx2gp () {
+int testidx2gp (int d, int l) {
 	int i;
 	std::set<Pair, CompareVectors> mapli;
 	int *lev, *ind;
 	std::set<Pair, CompareVectors>::iterator it;
 	// create an object which represents the function you want to use
 	SampleFct fct;
-	// specify d = number of dimensions and l = refinement level
-	int d = 5, l = 4;
 	// create a SparseGrid object
 	SparseGrid sgf = SparseGrid(d, l, &fct);
 
@@ -147,12 +184,10 @@ int testidx2gp () {
 /*
  * test if n0idx2gp(n0gp2idx(point_on_grid)) = index
  */
-int testBijection() {
+int testBijection(int d, int l) {
 	int b = 0, i;
 	// create an object which represents the function you want to use
 	SampleFct fct;
-	// specify d = number of dimensions and l = refinement level
-	int d = 5, l = 4;
 	// create a SparseGrid object
 	SparseGrid sgf = SparseGrid(d, l, &fct);
 	int nrGridPoints = sgf.getNumOfGridPoints();
@@ -177,15 +212,22 @@ int testBijection() {
 
 int main()
 {
+	int maxDim = 6, maxL = 7;
 	try {
-		if (testgp2idx()) throw 1;
+		for (int d = 1; d <= maxDim; d++)
+			for (int l = 1; l <= maxL; l++) { 
+				printf("Testing d = %i, l = %i...\n ", d, l);
+				if (testgp2idx(d, l)) throw 1;
 
-		if (testidx2gp()) throw 2;
+				if (testidx2gp(d, l)) throw 2;
 
-		if (testBijection()) throw 3;
+				if (testBijection(d, l)) throw 3;
+				printf("........Success!\n\n");
+			}
 	}
 	catch (int e) {
 		std::cout<<"Test number "<<e<<" failed"<<std::endl;
 	}
     return 0;
 }
+
