@@ -52,7 +52,6 @@ SparseGrid::SparseGrid(int d, int l, Function* f)
 		sg.sg1d = (float*) malloc(numOfGridPoints * sizeof(float));
 		
 		count = Helper::generate_grid_points(sg, gp, d - 1, l, f, numOfGridPoints);
-		printf("returned: %d, expected: %d\n", count, numOfGridPoints);
 		assert(count == numOfGridPoints);
 	} catch (int e) {
 		std::cout

@@ -22,6 +22,7 @@
  * PPoPP, Feb. 2011
  *
  *********************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -33,6 +34,8 @@
 #include "SparseGrid.h"
 #include "Converter.h"
 #include "Helper.h"
+
+using namespace std;
 
 using namespace fsg;
 
@@ -175,6 +178,48 @@ int testBijection() {
 	return 0;
 }
 
+/*
+ * test hierarchization and evaluation return correct results
+ */
+int testSparseGridOps(int d, int l) {
+	int b = 0, i;
+	// create an object which represents the function you want to use
+	SampleFct fct;
+	int di, li;
+
+	for (di = 1; di <= d; di++) {
+		for (li = 1; li <= 4; li++) {
+			// create a SparseGrid object
+			SparseGrid sgf = SparseGrid(di, li, &fct);
+			int nrGridPoints = sgf.getNumOfGridPoints();
+			int lev[di], ind[di];
+			float coords[di];
+			
+			sgf.hierarchize();
+
+			for (i = 0; i < nrGridPoints; i++) {
+				Converter::idx2gp(i, lev, ind, sgf.sg.d, sgf.sg.l);
+				Converter::li2coord(lev, ind, coords, sgf.sg.d);
+				if (sgf.evaluate(coords) != fct.getValue(coords, sgf.sg.d)) {
+					b = 1;
+					goto stop;
+				}
+			}
+		}
+	}
+
+	stop:
+	if (!b) {
+		cout << "************************** Operation test passed! *****************************" << endl;
+	}
+	else {
+		cout << "************************** Operation test failed! **************************" << endl;
+		return 1;
+	}
+
+	return 0;
+}
+
 int main()
 {
 	try {
@@ -183,6 +228,8 @@ int main()
 		if (testidx2gp()) throw 2;
 
 		if (testBijection()) throw 3;
+		
+		if (testSparseGridOps(5, 4)) throw 4;
 	}
 	catch (int e) {
 		std::cout<<"Test number "<<e<<" failed"<<std::endl;
