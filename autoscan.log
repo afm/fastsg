@@ -1,0 +1,4 @@
+autoscan: warning: missing AC_HEADER_STDBOOL wanted by: 
+	examples/Test2.cpp:92
+autoscan: warning: missing AC_PROG_RANLIB wanted by: 
+	ltmain.sh:1601
