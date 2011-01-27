@@ -63,6 +63,7 @@ int Helper::generate_grid_points(sparse_grid_t sg, float* gp, int crt_d, int n, 
 	int i, j, count = 0;
 	int levels[sg.d], indices[sg.d];
 	int val;
+
 	if (crt_d == -1) {
 		Converter::coord2li(gp, levels, indices, sg.d);
 

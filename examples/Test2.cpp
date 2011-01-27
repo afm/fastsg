@@ -91,7 +91,7 @@ int generate_points(int const_d, int const_l, float* gp, int crt_d,  int n, int 
 	return count;
 }
 
-/**
+/*
  * test if n0gp2idx generates all consecutive indices from 0 to nrGridPoints-1
  */
 int testgp2idx (int d, int l) {
@@ -126,7 +126,7 @@ int testgp2idx (int d, int l) {
 
 int dim;
 typedef std::pair<int*,int*> Pair;
-/**
+/*
  * Comparator for (l,i) pairs
  */
 struct CompareVectors {
@@ -145,7 +145,7 @@ struct CompareVectors {
   }
 };
 
-/**
+/*
  * use a set to test if n0idx2gp generates unique pairs (l,i)
  */
 int testidx2gp(int d, int l) {
@@ -167,7 +167,7 @@ int testidx2gp(int d, int l) {
 			cout << "Allocation error" << endl;
 			return 1;
 		}
-		Converter::idx2gp(i, lev, ind, sgf.sg.d, sgf.sg.l);
+		Converter::idx2gp(i, lev, ind, sgf.getD(), sgf.getL());
 		mapli.insert( std::make_pair(lev, ind));
 	}
 
@@ -182,7 +182,7 @@ int testidx2gp(int d, int l) {
 	}
 }
 
-/**
+/*
  * test if n0idx2gp(n0gp2idx(point_on_grid)) = index
  */
 int testBijection(int d, int l) {
@@ -195,8 +195,8 @@ int testBijection(int d, int l) {
 	int lev[d], ind[d];
 
 	for (i = 0; i < nrGridPoints; i++) {
-		Converter::idx2gp(i, lev, ind, sgf.sg.d, sgf.sg.l);
-		if (i != Converter::gp2idx(lev, ind, sgf.sg.d, sgf.sg.l)) {
+		Converter::idx2gp(i, lev, ind, sgf.getD(), sgf.getL());
+		if (i != Converter::gp2idx(lev, ind, sgf.getD(), sgf.getL())) {
 			b = 1;
 			break;
 		}
@@ -212,7 +212,7 @@ int testBijection(int d, int l) {
 	}
 }
 
-/**
+/*
  * test hierarchization and evaluation return correct results
  */
 int testSparseGridOps(int d, int l) {
@@ -229,8 +229,8 @@ int testSparseGridOps(int d, int l) {
 	sgf.hierarchize();
 
 	for (i = 0; i < nrGridPoints; i++) {
-		Converter::idx2gp(i, coords, sgf.sg.d, sgf.sg.l);
-		if (sgf.evaluate(coords) != fct.getValue(coords, sgf.sg.d)) {
+		Converter::idx2gp(i, coords, sgf.getD(), sgf.getL());
+		if (sgf.evaluate(coords) != fct.getValue(coords, sgf.getD())) {
 			b = 1;
 			goto stop;
 		}

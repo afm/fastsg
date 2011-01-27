@@ -75,6 +75,7 @@ namespace fsg
 			static int li2coord(int *levels, int *indices, float *coords, int d);
 
 			static int gp2idx(float *coords, int d, int n);
+
 			static int idx2gp(int index, float *coords, int d, int n);
 
 		private:

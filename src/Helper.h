@@ -23,14 +23,14 @@
  *
  *********************************************************************************/
 
-
 #include "DataStructure.h"
 #include "Function.h"
 
 #ifndef HELPER_H_
 #define HELPER_H_
 
-namespace fsg {
+namespace fsg
+{
 	/**
 	 * @class Helper
 	 *
@@ -40,31 +40,32 @@ namespace fsg {
 	 * @author Alin Murarasu
 	 *
 	 */
-	class Helper {
-	public:
-		/**
-		 * @param n Number of elements in a set
-		 * @param k Number of combinations
-		 * @return Result of computation
-		 */
-		static int combi(int n, int k);
-		/**
-		 * Returns the number of grid points of a 0-boundary sparse grid, d-dimensional, level of refinement n
-		 * @param d Number of dimensions
-		 * @param n Level of refinement
-		 * @return Result of computation
-		 */
-		static int zerob_size(int d, int n);
-		/**
-		 * Recursive function that generates the points on the sparse grid
-		 * @param sg The sparse grid structure in which the result will be stored
-		 * @param gp Vector of size d to store generated coordinates in a recursive call
-		 * @param crt_d The dimension to start with (d-1)
-		 * @param n Level of refinement
-		 * @param f The function giving the value for the sparse grid points
-		 * @return Number of points generated
-		 */
-		static int generate_grid_points(sparse_grid_t sg, float* gp, int crt_d, int n, Function* f);
+	class Helper
+	{
+		public:
+			/**
+			 * @param n Number of elements in a set
+			 * @param k Number of combinations
+			 * @return Result of computation
+			 */
+			static int combi(int n, int k);
+			/**
+			 * Returns the number of grid points of a 0-boundary sparse grid, d-dimensional, level of refinement n
+			 * @param d Number of dimensions
+			 * @param n Level of refinement
+			 * @return Result of computation
+			 */
+			static int zerob_size(int d, int n);
+			/**
+			 * Recursive function that generates the points on the sparse grid
+			 * @param sg The sparse grid structure in which the result will be stored
+			 * @param gp Vector of size d to store generated coordinates in a recursive call
+			 * @param crt_d The dimension to start with (d-1)
+			 * @param n Level of refinement
+			 * @param f The function giving the value for the sparse grid points
+			 * @return Number of points generated
+			 */
+			static int generate_grid_points(sparse_grid_t sg, float* gp, int crt_d, int n, Function* f);
 	};
 }
 

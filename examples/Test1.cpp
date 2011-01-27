@@ -22,6 +22,7 @@
  * PPoPP, Feb. 2011
  *
  *********************************************************************************/
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,17 +39,17 @@ using namespace fsg;
 
 class SampleFct : public Function
 {
-public:
-	float getValue (float *coords, int d)
-	{
-		int i;
-		float prod = 1;
+	public:
+		float getValue (float *coords, int d)
+		{
+			int i;
+			float prod = 1;
 
-		for (i = 0; i < d; i++)
-			prod *= coords[i] * (3 - coords[i]);
+			for (i = 0; i < d; i++)
+				prod *= coords[i] * (3 - coords[i]);
 
-		return prod;
-	}
+			return prod;
+		}
 };
 
 int testDemoFunc()
@@ -65,18 +66,18 @@ int testDemoFunc()
 	// compute the hierarchical coefficients
 	assert(sgf.hierarchize() == 0);
 
-	int lc[sgf.sg.d], ic[sgf.sg.d];
+	int lc[sgf.getD()], ic[sgf.getD()];
 	float val_ev, coords[d];
 
-	Converter::idx2gp(1, lc, ic, sgf.sg.d, sgf.sg.l);
-	Converter::li2coord(lc, ic, coords, sgf.sg.d);
+	Converter::idx2gp(1, lc, ic, sgf.getD(), sgf.getL());
+	Converter::li2coord(lc, ic, coords, sgf.getD());
 
 	// evaluate a point specified by coords
 	val_ev = sgf.evaluate(coords);
 	printf("Value from evaluation is %f; expecting: %f\n", val_ev, fct.getValue(coords, d));
 
-	int ln[sgf.sg.d],in[sgf.sg.d];
-	Converter::idx2gp(2, lc, ic, sgf.sg.d, sgf.sg.l);
+	int ln[sgf.getD()],in[sgf.getD()];
+	Converter::idx2gp(2, lc, ic, sgf.getD(), sgf.getL());
 
 	// go to the next sparse grid
 	sgf.next(lc, ic, ln, in);

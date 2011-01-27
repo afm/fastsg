@@ -54,11 +54,6 @@ namespace fsg
 			virtual ~SparseGrid();
 
 			/**
-			 * Structure that stores the linearized structure, number of dimensions and level of refinement
-			 */
-			sparse_grid_t sg;
-
-			/**
 			 * @param sg The sparse grid structure
 			 * @param coords The point in which we want to compute the value
 			 * Evaluates (or interpolates) the sparse grid at point coords inside the [0, 1]^d domain
@@ -138,9 +133,18 @@ namespace fsg
 			 * @return The size
 			 */
 
+			int size();
+			
+			static int size(int d, int n);
+			
+			int getD();
+			
+			int getL();
+			
 		private:
 			int numOfGridPoints;
-			int n0size(int d, int n);
+			float *sg1d;
+			int d, l;
 	};
 }
 

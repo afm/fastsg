@@ -30,9 +30,9 @@ namespace fsg
 {
 	class Function
 	{
-	public:
-		virtual float getValue (float *, int) = 0;
-	};
+		public:
+			virtual float getValue (float *, int) = 0;
+		};
 }
 
 #endif /* FUNCTION_H_ */
