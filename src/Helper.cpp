@@ -31,8 +31,6 @@
 
 using namespace fsg;
 
-std::vector<int> Helper::visited;
-
 /* returns the number of grid points of a 0-boundary sparse grid, d-dimensional, level of refinement n */
 int Helper::zerob_size(int d, int n)
 {
@@ -60,7 +58,7 @@ int Helper::combi(int n, int k)
 	return c;
 }
 
-int Helper::generate_grid_points(Sparse_grid_t sg, float* gp, int crt_d,  int n, Function* f, int numGridPoints)
+int Helper::generate_grid_points(Sparse_grid_t sg, float* gp, int crt_d,  int n, Function* f)
 {
 	int i, j, count = 0;
 	int levels[sg.d], indices[sg.d];
@@ -71,26 +69,20 @@ int Helper::generate_grid_points(Sparse_grid_t sg, float* gp, int crt_d,  int n,
 		val = Converter::gp2idx(levels, indices, sg.d, sg.l);
 		// fill vector
 		sg.sg1d[val] = f->getValue(gp, sg.d);
-
-		if (val < numGridPoints) {
-			Helper::visited[val] = 1;
-		}
-		else
-			std::cout<<"Index out of range [" << val << "]" << std::endl;
-
+		
 		return 1;
 	} else {
 		gp[crt_d] = 0.0f;
-		count += generate_grid_points(sg, gp, crt_d - 1, n, f, numGridPoints);
+		count += generate_grid_points(sg, gp, crt_d - 1, n, f);
 		gp[crt_d] = 1.0f;
-		count += generate_grid_points(sg, gp, crt_d - 1, n, f, numGridPoints);
+		count += generate_grid_points(sg, gp, crt_d - 1, n, f);
 
 		/* for each level */
 		for (i = 0; i < n; i++) {
 			/* for each point on the level in dimension crt_d */
 			for (j = 0; j < (1 << i); j++) {
 				gp[crt_d] = (1.0f / (1 << i)) * (j + 0.5f);
-				count += generate_grid_points(sg, gp, crt_d - 1, n - i, f, numGridPoints);
+				count += generate_grid_points(sg, gp, crt_d - 1, n - i, f);
 			}
 		}
 	}

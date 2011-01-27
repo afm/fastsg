@@ -39,50 +39,50 @@ namespace fsg
 	*/
 	class Converter
 	{
-	public:
-		/**
-		 * @param levels The l component (of size d)
-		 * @param indices The i component (of size d)
-		 * @param d Number of dimensions
-		 * @param n Level of refinement
-		 * @return Index corresponding to the [levels, indices] pair
-		 */
-		static int gp2idx(int *levels, int *indices, int d, int n);
-		/**
-		 * @param index The index from the sparse grid that needs to be converted to (l,i) coordinates
-		 * @param levels The computed l component (of size d)
-		 * @param indices The computed i component (of size d)
-		 * @param d Number of dimensions
-		 * @param n Level of refinement
-		 * @return If successful, returns 0
-		 */
-		static int idx2gp(int index, int *levels, int *indices, int d, int n);
-		/**
-		 * @param coords Vector of coords needed to be converted into (l,i)
-		 * @param levels The computed l component (of size d)
-		 * @param indices The computed i component (of size d)
-		 * @param d Number of dimensions
-		 * @return If successful, returns 0
-		 */
-		static int coord2li(float *coords, int *levels, int *indices, int d);
-		/**
-		 * @param levels The l component (of size d)
-		 * @param indices The i component (of size d)
-		 * @param coords Vector of computed coords
-		 * @param d Number of dimensions
-		 * @return If successful, returns 0
-		 */
-		static int li2coord(int *levels, int *indices, float *coords, int d);
+		public:
+			/**
+			 * @param levels The l component (of size d)
+			 * @param indices The i component (of size d)
+			 * @param d Number of dimensions
+			 * @param n Level of refinement
+			 * @return Index corresponding to the [levels, indices] pair
+			 */
+			static int gp2idx(int *levels, int *indices, int d, int n);
+			/**
+			 * @param index The index from the sparse grid that needs to be converted to (l,i) coordinates
+			 * @param levels The computed l component (of size d)
+			 * @param indices The computed i component (of size d)
+			 * @param d Number of dimensions
+			 * @param n Level of refinement
+			 * @return If successful, returns 0
+			 */
+			static int idx2gp(int index, int *levels, int *indices, int d, int n);
+			/**
+			 * @param coords Vector of coords needed to be converted into (l,i)
+			 * @param levels The computed l component (of size d)
+			 * @param indices The computed i component (of size d)
+			 * @param d Number of dimensions
+			 * @return If successful, returns 0
+			 */
+			static int coord2li(float *coords, int *levels, int *indices, int d);
+			/**
+			 * @param levels The l component (of size d)
+			 * @param indices The i component (of size d)
+			 * @param coords Vector of computed coords
+			 * @param d Number of dimensions
+			 * @return If successful, returns 0
+			 */
+			static int li2coord(int *levels, int *indices, float *coords, int d);
 
-	private:
-		static int gp2idx(int *levels, int *indices, int d);
-		static int gp2idx(float *coords, int d);
+		private:
+			static int gp2idx(int *levels, int *indices, int d);
+			static int gp2idx(float *coords, int d);
 
-		static int idx2gp(int index, int *levels, int *indices, int d);
-		static int idx2gp(int index, float *coords, int d);
+			static int idx2gp(int index, int *levels, int *indices, int d);
+			static int idx2gp(int index, float *coords, int d);
 
-		static int computeLevel(float x, float a, float b);
-	};
+			static int computeLevel(float x, float a, float b);
+		};
 }
 
 #endif /* COORDINATES_H_ */

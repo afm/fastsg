@@ -48,10 +48,10 @@ SparseGrid::SparseGrid(int d, int l, Function* f)
 		sg.d = d;
 		sg.l = l;
 		numOfGridPoints = n0size(sg.d, sg.l);
-		Helper::visited.resize(numOfGridPoints);
+		
 		sg.sg1d = (float*) malloc(numOfGridPoints * sizeof(float));
 		
-		count = Helper::generate_grid_points(sg, gp, d - 1, l, f, numOfGridPoints);
+		count = Helper::generate_grid_points(sg, gp, d - 1, l, f);
 		assert(count == numOfGridPoints);
 	} catch (int e) {
 		std::cout

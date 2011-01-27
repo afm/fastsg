@@ -22,15 +22,17 @@
  * PPoPP, Feb. 2011
  *
  *********************************************************************************/
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <iostream>
 
 #include "SparseGrid.h"
 #include "Converter.h"
 #include "Helper.h"
 #include "Function.h"
 
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 using namespace fsg;
 
@@ -123,9 +125,14 @@ int demoConverter()
 
 int main()
 {
-	assert(testDemoFunc() == 0);
+	try {
+		if (testDemoFunc()) throw 1;
 
-	assert(demoConverter() == 0);
-
+		if (demoConverter()) throw 2;
+	}
+	catch (int e) {
+		std::cout<<"Test number "<<e<<" failed"<<std::endl;
+	}
     return 0;
 }
+
