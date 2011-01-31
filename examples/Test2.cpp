@@ -45,15 +45,9 @@ class SampleFct : public Function
 		int d;
 
 	public:
-		SampleFct(int d)
-		{
-			this->d = d;
-		}
+		SampleFct(int d) { this->d = d; }
 	
-		int getD()
-		{
-			return d;
-		}
+		int getD() { return d; }
 	
 		float getValue(float *coords)
 		{
@@ -107,7 +101,8 @@ int generate_points(int const_d, int const_l, float* gp, int crt_d,  int n, int 
 /*
  * test if n0gp2idx generates all consecutive indices from 0 to nrGridPoints-1
  */
-int testgp2idx (int d, int l) {
+int testgp2idx (int d, int l)
+{
 	int b = 0;
 	int i, numGridPoints = 0;
 	float gp[d];
@@ -161,7 +156,8 @@ struct CompareVectors {
 /*
  * use a set to test if n0idx2gp generates unique pairs (l,i)
  */
-int testidx2gp(int d, int l) {
+int testidx2gp(int d, int l)
+{
 	int i;
 	std::set<Pair, CompareVectors> mapli;
 	int *lev, *ind;
@@ -198,7 +194,8 @@ int testidx2gp(int d, int l) {
 /*
  * test if n0idx2gp(n0gp2idx(point_on_grid)) = index
  */
-int testBijection(int d, int l) {
+int testBijection(int d, int l)
+{
 	int b = 0, i;
 	// create an object which represents the function you want to use
 	SampleFct fct(d);
@@ -228,7 +225,8 @@ int testBijection(int d, int l) {
 /*
  * test hierarchization and evaluation return correct results
  */
-int testSparseGridOps(int d, int l) {
+int testSparseGridOps(int d, int l)
+{
 	int b = 0, i;
 	// create an object which represents the function you want to use
 	SampleFct fct(d);

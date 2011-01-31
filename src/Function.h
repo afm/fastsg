@@ -33,7 +33,7 @@ namespace fsg
 		public:
 			virtual int getD() = 0;
 			virtual float getValue (float *) = 0;
-		};
+	};
 }
 
 #endif /* FUNCTION_H_ */
