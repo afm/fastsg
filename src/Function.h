@@ -31,7 +31,8 @@ namespace fsg
 	class Function
 	{
 		public:
-			virtual float getValue (float *, int) = 0;
+			virtual int getD() = 0;
+			virtual float getValue (float *) = 0;
 		};
 }
 

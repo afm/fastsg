@@ -50,7 +50,7 @@ namespace fsg
 			 * @param l Level of refinement
 			 * @param f Function that gives the values for the sparse grid
 			 */
-			SparseGrid(int d, int l, Function* f);
+			SparseGrid(int l, Function* f);
 			virtual ~SparseGrid();
 
 			/**

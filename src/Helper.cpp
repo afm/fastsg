@@ -69,7 +69,7 @@ int Helper::generate_grid_points(sparse_grid_t sg, float* gp, int crt_d, int n, 
 
 		val = Converter::gp2idx(levels, indices, sg.d, sg.l);
 		// fill vector
-		sg.sg1d[val] = f->getValue(gp, sg.d);
+		sg.sg1d[val] = f->getValue(gp);
 		
 		return 1;
 	} else {

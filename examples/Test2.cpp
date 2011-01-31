@@ -41,8 +41,21 @@ using namespace fsg;
 
 class SampleFct : public Function
 {
+	private:
+		int d;
+
 	public:
-		float getValue (float *coords, int d)
+		SampleFct(int d)
+		{
+			this->d = d;
+		}
+	
+		int getD()
+		{
+			return d;
+		}
+	
+		float getValue(float *coords)
 		{
 			int i;
 			float prod = 1;
@@ -154,9 +167,9 @@ int testidx2gp(int d, int l) {
 	int *lev, *ind;
 	std::set<Pair, CompareVectors>::iterator it;
 	// create an object which represents the function you want to use
-	SampleFct fct;
+	SampleFct fct(d);
 	// create a SparseGrid object
-	SparseGrid sgf = SparseGrid(d, l, &fct);
+	SparseGrid sgf = SparseGrid(l, &fct);
 
 	int nrGridPoints = sgf.getNumOfGridPoints();
 	dim = d;
@@ -188,9 +201,9 @@ int testidx2gp(int d, int l) {
 int testBijection(int d, int l) {
 	int b = 0, i;
 	// create an object which represents the function you want to use
-	SampleFct fct;
+	SampleFct fct(d);
 	// create a SparseGrid object
-	SparseGrid sgf = SparseGrid(d, l, &fct);
+	SparseGrid sgf = SparseGrid(l, &fct);
 	int nrGridPoints = sgf.getNumOfGridPoints();
 	int lev[d], ind[d];
 
@@ -218,10 +231,10 @@ int testBijection(int d, int l) {
 int testSparseGridOps(int d, int l) {
 	int b = 0, i;
 	// create an object which represents the function you want to use
-	SampleFct fct;
+	SampleFct fct(d);
 
 	// create a SparseGrid object
-	SparseGrid sgf = SparseGrid(d, l, &fct);
+	SparseGrid sgf = SparseGrid(l, &fct);
 	int nrGridPoints = sgf.getNumOfGridPoints();
 	int lev[d], ind[d];
 	float coords[d];
@@ -230,7 +243,7 @@ int testSparseGridOps(int d, int l) {
 
 	for (i = 0; i < nrGridPoints; i++) {
 		Converter::idx2gp(i, coords, sgf.getD(), sgf.getL());
-		if (sgf.evaluate(coords) != fct.getValue(coords, sgf.getD())) {
+		if (sgf.evaluate(coords) != fct.getValue(coords)) {
 			b = 1;
 			goto stop;
 		}

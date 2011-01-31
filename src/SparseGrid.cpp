@@ -37,11 +37,13 @@
 
 using namespace fsg;
 
-SparseGrid::SparseGrid(int d, int l, Function* f)
+SparseGrid::SparseGrid(int l, Function* f)
 {
-	float gp[d];
+	float gp[f->getD()];
 	int count;
 	int i;
+
+	d = f->getD();
 
 	try {
 		if (d < 0 || l < 0)
@@ -54,7 +56,7 @@ SparseGrid::SparseGrid(int d, int l, Function* f)
 
 		for (i = 0; i < numOfGridPoints; i++) {
 			Converter::idx2gp(i, gp, d, l);
-			sg1d[i] = f->getValue(gp, d);
+			sg1d[i] = f->getValue(gp);
 		}
 	} catch (int e) {
 		std::cout

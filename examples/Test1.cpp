@@ -39,8 +39,21 @@ using namespace fsg;
 
 class SampleFct : public Function
 {
+	private:
+		int d;
+
 	public:
-		float getValue (float *coords, int d)
+		SampleFct(int d)
+		{
+			this->d = d;
+		}
+	
+		int getD()
+		{
+			return d;
+		}
+	
+		float getValue(float *coords)
 		{
 			int i;
 			float prod = 1;
@@ -54,12 +67,13 @@ class SampleFct : public Function
 
 int testDemoFunc()
 {
-	// create an object which represents the function you want to use
-	SampleFct fct;
 	// specify d = number of dimensions and l = refinement level
 	int d = 5, l = 4;
+	// create an object which represents the function you want to use
+	SampleFct fct(d);
+	
 	// create a SparseGrid object
-	SparseGrid sgf = SparseGrid(d, l, &fct);
+	SparseGrid sgf = SparseGrid(l, &fct);
 
 	/********** demo of methods contained in SparseGrid class *****************/
 	printf ("\n######### Demo of SparseGrid functions #################\n");
@@ -74,7 +88,7 @@ int testDemoFunc()
 
 	// evaluate a point specified by coords
 	val_ev = sgf.evaluate(coords);
-	printf("Value from evaluation is %f; expecting: %f\n", val_ev, fct.getValue(coords, d));
+	printf("Value from evaluation is %f; expecting: %f\n", val_ev, fct.getValue(coords));
 
 	int ln[sgf.getD()],in[sgf.getD()];
 	Converter::idx2gp(2, lc, ic, sgf.getD(), sgf.getL());
