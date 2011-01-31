@@ -137,20 +137,22 @@ typedef std::pair<int*,int*> Pair;
 /*
  * Comparator for (l,i) pairs
  */
-struct CompareVectors {
-  bool operator ()(const Pair& p1, const Pair& p2) const {
-	  int* l1 = (int*) p1.first;
-	  int* l2 = (int*) p2.first;
-	  int* i1 = (int*) p1.second;
-	  int* i2 = (int*) p2.second;
-	  int i = 0;
-	  for (i = 0; i < dim; i++) {
-		if (l1[i] != l2[i] || i1[i] != i2[i]) {
-			return (l1[i] != l2[i] || i1[i] != i2[i]);
+struct CompareVectors
+{
+	bool operator ()(const Pair& p1, const Pair& p2) const
+	{
+		int* l1 = (int*) p1.first;
+		int* l2 = (int*) p2.first;
+		int* i1 = (int*) p1.second;
+		int* i2 = (int*) p2.second;
+		int i = 0;
+		for (i = 0; i < dim; i++) {
+			if (l1[i] != l2[i] || i1[i] != i2[i]) {
+				return (l1[i] != l2[i] || i1[i] != i2[i]);
+			}
 		}
-	  }
-	  return 1;
-  }
+		return 1;
+	}
 };
 
 /*

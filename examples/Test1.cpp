@@ -34,7 +34,6 @@
 #include "Helper.h"
 #include "Function.h"
 
-
 using namespace fsg;
 
 class SampleFct : public Function
@@ -43,15 +42,9 @@ class SampleFct : public Function
 		int d;
 
 	public:
-		SampleFct(int d)
-		{
-			this->d = d;
-		}
+		SampleFct(int d) { this->d = d; }
 	
-		int getD()
-		{
-			return d;
-		}
+		int getD() { return d; }
 	
 		float getValue(float *coords)
 		{
