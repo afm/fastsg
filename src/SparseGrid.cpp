@@ -29,8 +29,6 @@
 #include "Helper.h"
 
 #include <string.h>
-#include <assert.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -110,7 +108,7 @@ float SparseGrid::evaluate(float *coords)
 						pcoords[i++] = coords[k];
 					}
 				}
-				assert(i == pd);
+
 				/* no need to proceed if the sparse grids are 0-dimensional */
 				if (pd == 0) {
 					val += prod0 * sg1d[0];
@@ -138,7 +136,6 @@ float SparseGrid::evaluate(float *coords)
 							left = (int) ((pcoords[k] - 0.0f) / div) * div;
 							m = (2.0f * (pcoords[k] - left) - div) / div;
 							prod *= 1.0f + m * ((m < 0.0f) - !(m < 0.0f));
-							assert(prod>=0);
 						}
 
 						/* multiply with corresponding hierarchical coefficient */

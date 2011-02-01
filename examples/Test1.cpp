@@ -69,7 +69,7 @@ int testDemoFunc()
 	SparseGrid sgf = SparseGrid(l, &fct);
 
 	/********** demo of methods contained in SparseGrid class *****************/
-	printf ("\n######### Demo of SparseGrid functions #################\n");
+	printf ("\n################# Demo of SparseGrid functions #################\n");
 	// compute the hierarchical coefficients
 	assert(sgf.hierarchize() == 0);
 
@@ -110,7 +110,7 @@ int demoConverter()
 	int lev[d], idx[d];
 	float coords[d];
 
-	printf ("\n######### Demo of conversion functions #################\n");
+	printf ("\n################# Demo of conversion functions #################\n");
 	// convert a index from the linearized structure to (l,i) pair
 
 	Converter::idx2gp(index, lev, idx, d, l);
