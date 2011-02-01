@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <math.h>
 
 #include <iostream>
 #include <vector>
@@ -55,7 +56,7 @@ class SampleFct : public Function
 			float prod = 1;
 
 			for (i = 0; i < d; i++)
-				prod *= coords[i] * (2 - coords[i]);
+				prod *= (3 - coords[i]) * (2 - coords[i]);
 
 			return prod;
 		}
@@ -229,7 +230,7 @@ int testBijection(int d, int l)
  */
 int testSparseGridOps(int d, int l)
 {
-	int b = 0, i;
+	int b = 0, i, j;
 	// create an object which represents the function you want to use
 	SampleFct fct(d);
 
@@ -239,14 +240,38 @@ int testSparseGridOps(int d, int l)
 	int lev[d], ind[d];
 	float coords[d];
 	
+	int bs = 100, n;
+	float nxcoords[bs][d];
+	float vals[bs];	
+	
 	sgf.hierarchize();
 
 	for (i = 0; i < nrGridPoints; i++) {
 		Converter::idx2gp(i, coords, sgf.getD(), sgf.getL());
-		if (sgf.evaluate(coords) != fct.getValue(coords)) {
+		if (fabs((sgf.evaluate(coords) - fct.getValue(coords)) / fct.getValue(coords)) > 0.001) {
+			cout << sgf.evaluate(coords) << " != " << fct.getValue(coords) << endl;
 			b = 1;
 			goto stop;
 		}
+	}
+	
+	for (i = 0; i < nrGridPoints; i += bs) {
+		if (i + bs >= nrGridPoints)
+			n = nrGridPoints - i;
+		else
+			n = bs;
+		
+		for (j = 0; j < n; j++) {
+			Converter::idx2gp(i + j, nxcoords[j], sgf.getD(), sgf.getL());
+		}
+		
+		sgf.evaluate((float *) nxcoords, n, vals);
+		
+		for (j = 0; j < n; j++)
+			if (fabs((vals[j] - fct.getValue(nxcoords[j])) / fct.getValue(nxcoords[j])) > 0.001) {		
+				b = 1;
+				goto stop;
+			}
 	}
 
 	stop:

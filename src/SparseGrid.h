@@ -67,6 +67,10 @@ namespace fsg
 			 * Evaluates (or interpolates) the sparse grid at point (l,i) inside the [0, 1]^d domain
 			 * @return The result of the evaluation
 			 */
+
+			int evaluate(float *coords, int n, float *vals);
+
+
 			float evaluate(int *levels, int *indices);
 			/**
 			 * @param sg The sparse grid structure

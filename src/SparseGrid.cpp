@@ -163,11 +163,126 @@ float SparseGrid::evaluate(float *coords)
 				/* end evaluation of 0-boundary sparse grids */
 			}
 		}
-
+		
 	} catch (int i) {
 		std::cout << "The coordinates are not in [0,1]^d domain" << std::endl;
 	}
 	return val;
+}
+
+/* evaluates (or interpolates) the sparse grid at points stored in coords inside the [0, 1]^d domain */
+int SparseGrid::evaluate(float *coords, int n, float *vals)
+{
+	int k, i, j, index1, index2, t0, pd, kk;
+	float left, prod, div, m, prod0s[n];
+	int indices[d], plevels[d], levels[d];
+	float pcoords[n][d];
+	float *sg1d = this->sg1d;
+	float (*nxcoords)[d] = (float (*)[d]) coords;
+
+	for (j = 0; j < n; j++)
+		vals[j] = 0;
+
+	try {
+		for (j = 0; j < n; j++)
+			for (i = 0; i < d; i++)
+				if (nxcoords[j][i] > 1 || nxcoords[j][i] < 0)
+					throw 1;
+		index1 = 0;
+
+		/* loop over groups of sparse grids of the same dimensionality
+		 pd = projection dimensionality */
+		for (pd = d; pd >= 0; pd--) {
+			/* loop over sparse grids of the same dimensionality */
+			for (kk = 0; kk < (1 << (d - pd)) * Helper::combi(d, d - pd); kk++) {
+				/* convert index pointing to the current sparse grid to (l, i) */
+				Converter::idx2gp(index1, levels, indices, d, l);
+
+				/* move index to next sparse grid in the group */
+				index1 += Helper::zerob_size(pd, l);
+
+				for (j = 0; j < n; j++) {
+					/* for a given point, prod0 is the same for all the regular grids composing the current sparse grid */
+					prod0s[j] = 1.0f;
+					i = 0;
+					for (k = 0; k < d; k++) {
+						if (levels[k] == -1) {
+							if (indices[k] == 0)
+								prod0s[j] *= (1 - nxcoords[j][k]);
+							else
+								prod0s[j] *= nxcoords[j][k];
+						} else {
+							pcoords[j][i++] = nxcoords[j][k];
+						}
+					}
+				}
+
+				/* no need to proceed if the sparse grids are 0-dimensional */
+				if (pd == 0) {
+					for (j = 0; j < n; j++)
+						vals[j] += prod0s[j] * sg1d[0];
+					sg1d++;
+					continue;
+				}
+
+				/* initialize plevels with 0
+				 plevels = projection levels */
+				memset(plevels, 0, pd * sizeof(int));
+
+				/* start evaluation of 0-boundary sparse grids */
+				for (i = 0; i < l; i++) {
+					plevels[0] = 0;
+					plevels[pd - 1] = i;
+					do {
+						/* for each evaluation point */
+						for (j = 0; j < n; j++) {
+							/* initilize production with initial product! */
+							prod = prod0s[j];
+							index2 = 0;
+							/* multiply pd 1-dimensional hat functions */
+							for (k = 0; k < pd; k++) {
+								div = (1.0f - 0.0f) / (1 << plevels[k]);
+								index2 = index2 * (1 << plevels[k])
+										+ (int) ((pcoords[j][k] - 0.0f) / div);
+								left = (int) ((pcoords[j][k] - 0.0f) / div) * div;
+								m = (2.0f * (pcoords[j][k] - left) - div) / div;
+								prod *= 1.0f + m * ((m < 0.0f) - !(m < 0.0f));
+							}
+
+							/* multiply with corresponding hierarchical coefficient */
+							prod *= sg1d[index2];
+							/* add contribution to the interpolation result */
+							vals[j] += prod;
+						}
+
+						/* move to the next regular (full) grid of the current sparse grid of dimensionality pd */
+						sg1d += 1 << i;
+
+						/* if the end of the group of regular grids is reached, stop */
+						if (plevels[0] == i)
+							break;
+
+						/* otherwise, use iterator to generate the next valid levels */
+						k = 1;
+						while (plevels[k] == 0)
+							k++;
+						plevels[k]--;
+						t0 = plevels[0];
+						plevels[0] = 0;
+						plevels[k - 1] = t0 + 1;
+					} while (1);
+				}
+				/* end evaluation of 0-boundary sparse grids */
+			}
+		}
+		
+	} catch (int i) {
+		std::cout << "The coordinates are not in [0,1]^d domain" << std::endl;
+		
+		return -1;
+	}
+	
+	return 0;
 }
 
 float SparseGrid::evaluate(int *levels, int *indices)
