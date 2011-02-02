@@ -170,7 +170,7 @@ int testidx2gp(int d, int l)
 	// create a SparseGrid object
 	SparseGrid sgf = SparseGrid(l, &fct);
 
-	int nrGridPoints = sgf.getNumOfGridPoints();
+	int nrGridPoints = sgf.size();
 	dim = d;
 	for (i = 0; i < nrGridPoints; i++) {
 		lev = (int*)malloc(d*sizeof(int));
@@ -204,7 +204,7 @@ int testBijection(int d, int l)
 	SampleFct fct(d);
 	// create a SparseGrid object
 	SparseGrid sgf = SparseGrid(l, &fct);
-	int nrGridPoints = sgf.getNumOfGridPoints();
+	int nrGridPoints = sgf.size();
 	int lev[d], ind[d];
 
 	for (i = 0; i < nrGridPoints; i++) {
@@ -236,7 +236,7 @@ int testSparseGridOps(int d, int l)
 
 	// create a SparseGrid object
 	SparseGrid sgf = SparseGrid(l, &fct);
-	int nrGridPoints = sgf.getNumOfGridPoints();
+	int nrGridPoints = sgf.size();
 	int lev[d], ind[d];
 	float coords[d];
 	

@@ -305,13 +305,13 @@ int SparseGrid::hierarchize()
 			Converter::idx2gp(j, levels, indices, d, l);
 
 			/* retrieve left parent's value from sparse grid */
-			if (get_lparent(levels, indices, plevels, pindices, i) != -1)
+			if (getLeftParent(levels, indices, plevels, pindices, i) != -1)
 				val1 = sg1d[Converter::gp2idx(plevels, pindices, d, l)];
 			else
 				val1 = 0;
 
 			/* retrieve right parent's value from sparse grid */
-			if (get_rparent(levels, indices, plevels, pindices, i) != -1)
+			if (getRightParent(levels, indices, plevels, pindices, i) != -1)
 				val2 = sg1d[Converter::gp2idx(plevels, pindices, d, l)];
 			else
 				val2 = 0;
@@ -324,7 +324,7 @@ int SparseGrid::hierarchize()
 }
 
 /* returns the (l, i) of the left parent in dimension cd */
-int SparseGrid::get_lparent(int *levels, int *indices, int *plevels, int *pindices, int cd)
+int SparseGrid::getLeftParent(int *levels, int *indices, int *plevels, int *pindices, int cd)
 {
 	int i;
 	float pc;
@@ -357,7 +357,7 @@ int SparseGrid::get_lparent(int *levels, int *indices, int *plevels, int *pindic
 }
 
 /* returns the (l, i) of the right parent in dimension cd */
-int SparseGrid::get_rparent(int *levels, int *indices, int *plevels, int *pindices, int cd)
+int SparseGrid::getRightParent(int *levels, int *indices, int *plevels, int *pindices, int cd)
 {
 	int i;
 	float pc;
@@ -389,21 +389,23 @@ int SparseGrid::get_rparent(int *levels, int *indices, int *plevels, int *pindic
 	return 0;
 }
 
-int SparseGrid::get_lparent(float *coords, float *pcoords, int cd)
+int SparseGrid::getLeftParent(float *coords, float *pcoords, int cd)
 {
 	int levels[d], indices[d], plevels[d], pindices[d];
+
 	Converter::coord2li(coords, levels, indices, d);
-	get_lparent(levels, indices, plevels, pindices, cd);
+	getLeftParent(levels, indices, plevels, pindices, cd);
 	Converter::li2coord(plevels, pindices, pcoords, d);
 
 	return 0;
 }
 
-int SparseGrid::get_rparent(float *coords, float *pcoords, int cd)
+int SparseGrid::getRightParent(float *coords, float *pcoords, int cd)
 {
 	int levels[d], indices[d], plevels[d], pindices[d];
+
 	Converter::coord2li(coords, levels, indices, d);
-	get_rparent(levels, indices, plevels, pindices, cd);
+	getRightParent(levels, indices, plevels, pindices, cd);
 	Converter::li2coord(plevels, pindices, pcoords, d);
 
 	return 0;
@@ -425,11 +427,6 @@ int SparseGrid::next(int *crt_levels, int *crt_indices, int *next_levels, int *n
 	return 0;
 }
 
-int SparseGrid::getNumOfGridPoints() const
-{
-	return numOfGridPoints;
-}
-
 /* the size of a non-zero boundary, d-dimensional, n-refined sparse grid */
 int SparseGrid::size(int d, int n)
 {
@@ -444,7 +441,7 @@ int SparseGrid::size(int d, int n)
 }
 
 /* the size of the sparse grid */
-int SparseGrid::size()
+int SparseGrid::size() const
 {
 	return numOfGridPoints;
 }

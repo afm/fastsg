@@ -46,72 +46,80 @@ namespace fsg
 		public:
 			/**
 			 * Class constructor
-			 * @param d Number of dimensions
 			 * @param l Level of refinement
-			 * @param f Function that gives the values for the sparse grid
+			 * @param f Function to be represented using the sparse grid technique
 			 */
 			SparseGrid(int l, Function* f);
+
+			/**
+			 * Class destructor
+			 */
 			virtual ~SparseGrid();
 
 			/**
-			 * @param sg The sparse grid structure
-			 * @param coords The point in which we want to compute the value
+			 * @param coords The point at which we evaluate (interpolate) the sparse grid
 			 * Evaluates (or interpolates) the sparse grid at point coords inside the [0, 1]^d domain
 			 * @return The result of the evaluation
 			 */
 			float evaluate(float *coords);
 
+			/**
+			 * @param coords The set of points at which we evaluate (interpolate) the sparse grid
+			 * @param n The size of the set
+			 * @param vals The results of the evaluation
+			 * Evaluates (or interpolates) the sparse grid at points stored in coords inside the [0, 1]^d domain
+			 * @return Returns 0 if successfull
+			 */
 			int evaluate(float *coords, int n, float *vals);
 
 			/**
-			 * @param sg The sparse grid structure
 			 * Computes the hierarchical coefficients for a d-dimesional, level n, non-0 boundary sparse grid.
-		 	 * Initially, sg1d contains function values.
+		 	 * Initially, the sparse grid contains function values at required grid's coordinates.
 			 * @return Returns 0 if successful
 			 */
 			int hierarchize();
+
 			/**
-			 * @param sg The sparse grid structure
 			 * @param levels The l vector of the child
 			 * @param indices The i vector of the child
-			 * @param plevels The l vector of the left parent
-			 * @param pindices The i vector of the left parent
-			 * @param cd The dimension for which we are computing the values
-			 * returns the (l, i) of the left parent in dimension cd
+			 * @param plevels The l vector of the left parent in dimension cd
+			 * @param pindices The i vector of the left parent in dimension cd
+			 * @param cd The dimension for which we are computing the neighbors
+			 * returns the (l, i) representation of the left parent in dimension cd
 			 * @return Returns 0 if successful
 			 */
-			int get_lparent(int *levels, int *indices, int *plevels, int *pindices, int cd);
+			int getLeftParent(int *levels, int *indices, int *plevels, int *pindices, int cd);
+
 			/**
-			 * @param sg The sparse grid structure
 			 * @param levels The l vector of the child
 			 * @param indices The i vector of the child
-			 * @param plevels The l vector of the right parent
-			 * @param pindices The i vector of the right parent
-			 * @param cd The dimension for which we are computing the values
-			 * returns the (l, i) of the right parent in dimension cd
+			 * @param plevels The l vector of the right parent in dimension cd
+			 * @param pindices The i vector of the right parent in dimension cd
+			 * @param cd The dimension for which we are computing the neighbors 
+			 * returns the (l, i) representation of the right parent in dimension cd
 			 * @return Returns 0 if successful
-			 */
-			int get_rparent(int *levels, int *indices, int *plevels, int *pindices, int cd);
+			 */			 
+			int getRightParent(int *levels, int *indices, int *plevels, int *pindices, int cd);
+
 			/**
-			 * @param sg The sparse grid structure
 			 * @param coords The coords vector of the child
 			 * @param pcoords The coords vector of the left parent
-			 * @param cd The dimension for which we are computing the values
-			 * returns the (coords) of the left parent in dimension cd
+			 * @param cd The dimension for which we are computing the neighbors
+			 * returns the coords of the left parent in dimension cd
 			 * @return Returns 0 if successful
 			 */
-			int get_lparent(float *coords, float *pcoords, int cd);
+			int getLeftParent(float *coords, float *pcoords, int cd);
+
 			/**
-			 * @param sg The sparse grid structure
 			 * @param coords The coords vector of the child
 			 * @param pcoords The coords vector of the right parent
-			 * @param cd The dimension for which we are computing the values
-			 * returns the (coords) of the right parent in dimension cd
+			 * @param cd The dimension for which we are computing the neighbors
+			 * returns the coords of the right parent in dimension cd
 			 * @return Returns 0 if successful
 			 */
-			int get_rparent(float *coords, float *pcoords, int cd);
+			int getRightParent(float *coords, float *pcoords, int cd);
+
 			/**
-			 * @param sg The sparse grid structure
 			 * @param crt_levels
 			 * @param crt_indices
 			 * @param next_levels
@@ -120,20 +128,31 @@ namespace fsg
 			 * @return Returns 0 if successful
 			 */
 			int next(int *crt_levels, int *crt_indices, int *next_levels, int *next_indices);
-			int getNumOfGridPoints() const;
+
+			/**
+			 * The number of grid points composing the sparse grid
+			 * @return The size of the sparse grid
+			 */
+			int size() const;
+			
 			/**
 			 * @param d The number of dimensions
 			 * @param n The level of refinement
-			 * The size of a non-zero boundary, d-dimensional, n-refined sparse grid
+			 * The size of a non-0 boundary, d-dimensional, level n sparse grid
 			 * @return The size
 			 */
-
-			int size();
-			
 			static int size(int d, int n);
-			
+
+			/**
+			 * The number of dimensions of the sparse grid
+			 * @return The dimensionality of the sparse grid
+			 */			
 			int getD();
-			
+
+			/**
+			 * The refinement level of the sparse grid
+			 * @return The refinement level of the sparse grid
+			 */			
 			int getL();
 			
 		private:
