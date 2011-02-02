@@ -60,18 +60,9 @@ namespace fsg
 			 * @return The result of the evaluation
 			 */
 			float evaluate(float *coords);
-			/**
-			 * @param sg The sparse grid structure
-			 * @param levels The l vector
-			 * @param indices The i vector
-			 * Evaluates (or interpolates) the sparse grid at point (l,i) inside the [0, 1]^d domain
-			 * @return The result of the evaluation
-			 */
 
 			int evaluate(float *coords, int n, float *vals);
 
-
-			float evaluate(int *levels, int *indices);
 			/**
 			 * @param sg The sparse grid structure
 			 * Computes the hierarchical coefficients for a d-dimesional, level n, non-0 boundary sparse grid.

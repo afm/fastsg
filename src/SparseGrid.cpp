@@ -285,15 +285,6 @@ int SparseGrid::evaluate(float *coords, int n, float *vals)
 	return 0;
 }
 
-float SparseGrid::evaluate(int *levels, int *indices)
-{
-	float coords[d];
-
-	Converter::li2coord(levels, indices, coords, d);
-
-	return evaluate(coords);
-}
-
 /* 
  * computes the hierarchical coefficients for a d-dimesional, level n, non-0 boundary sparse grid
  * initially, sg1d contains function values 
@@ -324,6 +315,7 @@ int SparseGrid::hierarchize()
 				val2 = sg1d[Converter::gp2idx(plevels, pindices, d, l)];
 			else
 				val2 = 0;
+	
 			/* update current hierarchical coefficient (at position j) */
 			sg1d[j] = sg1d[j] - (val1 + val2) / 2.0f;
 		}
