@@ -31,7 +31,7 @@ namespace fsg
 	/**
 	* @class Converter
 	*
-	* @brief Useful methods for working with coordinates
+	* @brief Useful methods for working with various representations of sparse grid points
 	*
 	*
 	* @author Alin Murarasu
@@ -45,11 +45,12 @@ namespace fsg
 			 * @param indices The i component (of size d)
 			 * @param d Number of dimensions
 			 * @param n Level of refinement
-			 * @return Index corresponding to the [levels, indices] pair
+			 * @return Index corresponding to the (levels, indices) pair
 			 */
 			static int gp2idx(int *levels, int *indices, int d, int n);
+
 			/**
-			 * @param index The index from the sparse grid that needs to be converted to (l,i) coordinates
+			 * @param index The index from the sparse grid that is converted to (l, i) representation
 			 * @param levels The computed l component (of size d)
 			 * @param indices The computed i component (of size d)
 			 * @param d Number of dimensions
@@ -57,14 +58,16 @@ namespace fsg
 			 * @return If successful, returns 0
 			 */
 			static int idx2gp(int index, int *levels, int *indices, int d, int n);
+
 			/**
-			 * @param coords Vector of coords needed to be converted into (l,i)
+			 * @param coords Vector of coords to be converted into (l, i)
 			 * @param levels The computed l component (of size d)
 			 * @param indices The computed i component (of size d)
 			 * @param d Number of dimensions
 			 * @return If successful, returns 0
 			 */
 			static int coord2li(float *coords, int *levels, int *indices, int d);
+
 			/**
 			 * @param levels The l component (of size d)
 			 * @param indices The i component (of size d)
@@ -74,18 +77,62 @@ namespace fsg
 			 */
 			static int li2coord(int *levels, int *indices, float *coords, int d);
 
+			/**
+			 * @param coords The coordinates of the sparse grid point
+			 * @param d Number of dimensions
+			 * @param n Level of refinement
+			 * @return Index corresponding to coords
+			 */
 			static int gp2idx(float *coords, int d, int n);
 
+			/**
+			 * @param index The index from the sparse grid that is converted to coordinates
+			 * @param coords The computed coordinates of size d
+			 * @param d Number of dimensions
+			 * @param n Level of refinement
+			 * @return If successful, returns 0
+			 */
 			static int idx2gp(int index, float *coords, int d, int n);
 
-		private:
-			static int gp2idx(int *levels, int *indices, int d);
-			static int gp2idx(float *coords, int d);
-
-			static int idx2gp(int index, int *levels, int *indices, int d);
-			static int idx2gp(int index, float *coords, int d);
-
+			/**
+			 * @param x A real number in the interval [a, b]
+			 * @param a The left margin of the interval
+			 * @param b The right margin of the interval
+			 * @return Returns the refinement level corresponding to x
+			 */
 			static int computeLevel(float x, float a, float b);
+
+			/**
+			 * @param levels The l component (of size d)
+			 * @param indices The i component (of size d)
+			 * @param d Number of dimensions
+			 * @return Index corresponding to the (levels, indices) pair in a zero boundary sparse grid
+			 */
+			static int zb_gp2idx(int *levels, int *indices, int d);
+
+			/**
+			 * @param coords The coordinates of the sparse grid point
+			 * @param d Number of dimensions
+			 * @return Index corresponding to coords in a zero boundary sparse grid
+			 */
+			static int zb_gp2idx(float *coords, int d);
+
+			/**
+			 * @param index The index from the zero boundary sparse grid that is converted to (l, i)
+			 * @param levels The computed l component (of size d)
+			 * @param indices The computed i component (of size d)
+			 * @param d Number of dimensions
+			 * @return If successful, returns 0
+			 */
+			static int zb_idx2gp(int index, int *levels, int *indices, int d);
+
+			/**
+			 * @param index The index from the zero boundary sparse grid that is converted to coordinates
+			 * @param coords The computed coordinates of size d
+			 * @param d Number of dimensions
+			 * @return If successful, returns 0
+			 */
+			static int zb_idx2gp(int index, float *coords, int d);
 		};
 }
 

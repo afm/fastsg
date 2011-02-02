@@ -28,7 +28,8 @@
 
 using namespace fsg;
 
-int Converter::gp2idx(int *levels, int *indices, int d)
+/* zero boundary gp2idx */
+int Converter::zb_gp2idx(int *levels, int *indices, int d)
 {
 	int index1, index2, index3, i, sum;
 
@@ -55,7 +56,8 @@ int Converter::gp2idx(int *levels, int *indices, int d)
 	return index1 + index2 + index3;
 }
 
-int Converter::idx2gp(int index, int *levels, int *indices, int d)
+/* zero boundary idx2gp */
+int Converter::zb_idx2gp(int index, int *levels, int *indices, int d)
 {
 	int i, j, f, isum, sum, level, dindex, rest;
 
@@ -100,7 +102,8 @@ int Converter::idx2gp(int index, int *levels, int *indices, int d)
 	return 0;
 }
 
-int Converter::gp2idx(float *coords, int d) {
+/* zero boundary gp2idx */
+int Converter::zb_gp2idx(float *coords, int d) {
 	float index1;
 	int index2, index3, i, sum, level;
 
@@ -126,7 +129,8 @@ int Converter::gp2idx(float *coords, int d) {
 	return (int) (index1 + 0.5) + index2 + index3;
 }
 
-int Converter::idx2gp(int index, float *coords, int d) {
+/* zero boundary idx2gp */
+int Converter::zb_idx2gp(int index, float *coords, int d) {
 	int i, j, f, isum, sum, level, dindex, rest;
 
 	f = 1;
@@ -168,7 +172,7 @@ int Converter::idx2gp(int index, float *coords, int d) {
 	return 0;
 }
 
-/* non-zero gp2idx, wrapper around gp2idx */
+/* non-zero gp2idx, wrapper around zb_gp2idx */
 int Converter::gp2idx(int *levels, int *indices, int d, int n)
 {
 	int index1, index2, index3;
@@ -184,7 +188,7 @@ int Converter::gp2idx(int *levels, int *indices, int d, int n)
 			pindices[pd++] = indices[i];
 		}
 	if (pd) {
-		index1 = Converter::gp2idx(plevels, pindices, pd);
+		index1 = Converter::zb_gp2idx(plevels, pindices, pd);
 	}
 	else
 		index1 = 0;
@@ -244,7 +248,7 @@ int Converter::idx2gp(int index, int *levels, int *indices, int d, int n)
 
 	/* convert index1 to (l, i) representation for the projection */
 
-	Converter::idx2gp(index1, plevels, pindices, pd);
+	Converter::zb_idx2gp(index1, plevels, pindices, pd);
 
 	/* find the positions in levels of the -1 components and more... */
 	j = 0;
@@ -314,22 +318,24 @@ int Converter::li2coord(int *levels, int *indices, float *coords, int d)
 	return 0;
 }
 
+/* computes the refinement level of x located between in the interval [a, b] */
 int Converter::computeLevel(float x, float a, float b)
 {
 	int i;
-	float r = (x - a) / (b - a), d = 0.5;
+	float r = (x - a) / (b - a), d = 0.5f;
 
 	i = 0;
 	while (r != d) {
 		if (r > d)
 			r -= d;
-		d /= 2;
+		d /= 2.0f;
 		i++;
 	}
 
 	return i;
 }
 
+/* returns the 1d index of the grid point coords */
 int Converter::gp2idx(float *coords, int d, int n)
 {
 	int levels[d], indices[d];
@@ -339,6 +345,7 @@ int Converter::gp2idx(float *coords, int d, int n)
 	return gp2idx(levels, indices, d, n);
 }
 
+/* returns the coords of the grid point with index */
 int Converter::idx2gp(int index, float *coords, int d, int n)
 {
 	int levels[d], indices[d];
