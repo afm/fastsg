@@ -427,7 +427,7 @@ int SparseGrid::next(int *crt_levels, int *crt_indices, int *next_levels, int *n
 	return 0;
 }
 
-/* the size of a non-zero boundary, d-dimensional, n-refined sparse grid */
+/* computes the size of a non-zero boundary, d-dimensional, n-refined sparse grid */
 int SparseGrid::size(int d, int n)
 {
 	int i, s = 0;
@@ -440,17 +440,19 @@ int SparseGrid::size(int d, int n)
 	return s;
 }
 
-/* the size of the sparse grid */
+/* returns the size of the sparse grid */
 int SparseGrid::size() const
 {
 	return numOfGridPoints;
 }
 
+/* returns the number of dimensions */
 int SparseGrid::getD()
 {
 	return d;
 }
 
+/* returns the refinement level */
 int SparseGrid::getL()
 {
 	return l;

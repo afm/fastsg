@@ -47,7 +47,6 @@ int Converter::zb_gp2idx(int *levels, int *indices, int d)
 	}
 	sum += levels[i];
 	index2 <<= sum;
-
 	index3 = 0;
 	for (i = 0; i < sum; i++) {
 		index3 += (1 << i) * Helper::combi(d - 1 + i, i);
