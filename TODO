@@ -1,9 +1,13 @@
 TODO list
 ---------
 
-* Change combi with matrix
+* Determine optimal cache blocking for evaluation in SparseGrid constructor
 
-* Optimize function for generating grid points
+* Determine optimal loop unrolling for evaluation
+
+* Parallelize with OpenMP
+
+* Change combi with matrix
 
 * Replace asserts with exceptions
 
